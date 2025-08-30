@@ -2,15 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import LoginPage from './Pages/loginPage';
-import SignupPage from './Pages/SigupPage';
+import SignupPage from './Pages/SignupPage';
 import CatalogPage from './Pages/CatalogPage';
 import ProfilePage from './Pages/ProfilePage';
-import { AuthContext } from './context/AuthContext';
-import { useContext } from 'react';
 
 const PrivateRoute = ({ children }) => {
-  const { auth } = useContext(AuthContext);
-  return auth ? children : <Navigate to="/login" />;
+
+  const token = localStorage.getItem('auth');
+  console.log({token});
+  return token ? children : <Navigate to="/login" />;
+
 };
 
 function App() {

@@ -2,8 +2,10 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
+
 const Header = () => {
-  const { auth, logout } = useContext(AuthContext);
+  const token = localStorage.getItem('auth');
+  const { logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,7 +17,7 @@ const Header = () => {
     <header className="bg-gray-800 text-white p-4 flex justify-between items-center">
       <Link to="/" className="text-xl font-bold">Mini SaaS App</Link>
       <nav>
-        {auth ? (
+        {token ? (
           <>
             <Link to="/catalog" className="mx-2 hover:text-gray-400">Catalog</Link>
             <Link to="/profile" className="mx-2 hover:text-gray-400">Profile</Link>

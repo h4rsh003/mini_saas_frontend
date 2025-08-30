@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
 
 const CatalogPage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { auth } = useContext(AuthContext);
+
+  const token = localStorage.getItem('auth');
 
   useEffect(() => {
     const fetchArticles = async () => {
-      if (!auth || !auth.accessToken) {
+      console.log({token});
+      if (!token) {
         setLoading(false);
         setError('Please log in to view content.');
         return;
@@ -19,7 +20,7 @@ const CatalogPage = () => {
       try {
         const config = {
           headers: {
-            'Authorization': `Bearer ${auth.accessToken}`,
+            'Authorization': `Bearer ${token}`,
           },
         };
         const response = await axios.get('http://localhost:5000/api/content', config);
@@ -32,7 +33,7 @@ const CatalogPage = () => {
       }
     };
     fetchArticles();
-  }, [auth]);
+  }, [token]);
 
   if (loading) return <div className="text-center mt-8">Loading...</div>;
   if (error) return <div className="text-center mt-8 text-red-500">{error}</div>;

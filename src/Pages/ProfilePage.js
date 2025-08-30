@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
@@ -8,49 +7,54 @@ const ProfilePage = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { auth, login } = useContext(AuthContext); 
+  console.log({ profile });
+  const token = localStorage.getItem('auth');
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      setLoading(true);
-      if (!auth || !auth.accessToken) {
-        setLoading(false);
-        setError('Not authenticated.');
-        return;
-      }
-      try {
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${auth.accessToken}`,
-          },
-        };
-        const response = await axios.get('http://localhost:5000/api/profile', config);
-        setProfile(response.data);
-      } catch (err) {
-        console.error('Failed to fetch profile:', err);
-        setError('Could not load profile.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProfile();
-  }, [auth]);
-
-  const handleUpgrade = async () => {
+  const fetchProfile = async () => {
+    setLoading(true);
+    if (!token) {
+      setLoading(false);
+      setError('Not authenticated.');
+      return;
+    }
     try {
       const config = {
         headers: {
-          'Authorization': `Bearer ${auth.accessToken}`,
+          'Authorization': `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get('http://localhost:5000/api/profile', config);
+      if (response) {
+        setProfile(response.data);
+      }
+
+    } catch (err) {
+      console.error('Failed to fetch profile:', err);
+      setError('Could not load profile.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if(fetchProfile)
+    fetchProfile();
+  }, [token]);
+
+  const handleUpgrade = async () => {
+
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`,
         },
       };
       const response = await axios.post('http://localhost:5000/api/checkout', {}, config);
       setMessage(response.data.message);
+      if (response) {
+        fetchProfile();
+      }
 
-      // Manually update context to reflect new role
-      const updatedAuth = { ...auth, role: 'premium' };
-      localStorage.setItem('auth', JSON.stringify(updatedAuth));
-      login(auth.email, auth.password); // Re-authenticate to get a fresh token if needed
-      
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
@@ -77,7 +81,7 @@ const ProfilePage = () => {
             </div>
             <div className="mb-6">
               <p className="text-gray-700">
-                <strong>Subscription Status:</strong> 
+                <strong>Subscription Status:</strong>
                 <span className={`font-bold ${profile.role === 'premium' ? 'text-yellow-600' : 'text-green-600'}`}>
                   {profile.role.toUpperCase()}
                 </span>

@@ -6,19 +6,15 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(null);
 
-    useEffect(() => {
-        const storedAuth = localStorage.getItem('auth');
-        if (storedAuth) {
-            setAuth(JSON.parse(storedAuth));
-        }
-    }, []);
-
     const login = async (email, password) => {
         try {
             const response = await axios.post('http://localhost:5000/api/login', { email, password });
-            const userData = response.data;
-            localStorage.setItem('auth', JSON.stringify(userData));
-            setAuth(userData);
+            const userData = await response.data;
+            console.log({userData});
+            if(userData)
+           { localStorage.setItem('auth', userData.token);
+            setAuth(userData);}
+            
             return userData;
         } catch (error) {
             console.error('Login failed:', error);
