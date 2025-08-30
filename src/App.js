@@ -1,5 +1,3 @@
-// /frontend/src/App.js
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
@@ -10,7 +8,6 @@ import ProfilePage from './Pages/ProfilePage';
 import { AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
 
-// A simple component to protect routes
 const PrivateRoute = ({ children }) => {
   const { auth } = useContext(AuthContext);
   return auth ? children : <Navigate to="/login" />;
