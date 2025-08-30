@@ -217,6 +217,6 @@ The backend provides a RESTful API for all application functionality.
 
 ### Live Demo & Repository
 
-* **Deployed Frontend**: https://mini-saas-frontend.vercel.app/catalog
+* **Deployed Frontend**: https://mini-saas-frontend.vercel.app/
 * **GitHub Frontend**: https://github.com/h4rsh003/mini_saas_frontend
 * **GitHub Backend**: https://github.com/h4rsh003/mini_saas_backend
