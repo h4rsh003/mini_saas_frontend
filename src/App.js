@@ -26,7 +26,7 @@ function App() {
           
           <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
           
-          <Route path="/" element={<Navigate to="/catalog" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </main>
     </Router>
