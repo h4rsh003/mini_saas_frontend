@@ -1,6 +1,9 @@
+// /frontend/src/pages/SignupPage.js
+
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import axios from 'axios'; // Make sure to import axios
 
 const SignupPage = () => {
     const [username, setUsername] = useState('');
@@ -14,8 +17,11 @@ const SignupPage = () => {
         e.preventDefault();
         setError('');
 
-        try{
+        try {
+            // This is the missing API call to create the user
+            await axios.post('http://localhost:5000/api/signup', { username, email, password });
 
+            // Now, log in the user with the same credentials
             await login(email, password);
 
             navigate('/catalog');
