@@ -17,9 +17,7 @@ const SignupPage = () => {
         try {
             await axios.post('http://localhost:5000/api/signup', { username, email, password });
 
-            await login(email, password);
-
-            navigate('/catalog');
+            navigate('/login');
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);
