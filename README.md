@@ -1,70 +1,222 @@
-# Getting Started with Create React App
+### Mini SaaS Subscription App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simplified, subscription-based content platform built using the MERN stack. It allows users to sign up, log in, and access a content catalog. The application enforces role-based access control, where free users can only view free content, while premium users can access all content after a mock payment.
 
-## Available Scripts
+***
 
-In the project directory, you can run:
+### Features
 
-### `npm start`
+* **User Authentication**: Secure signup and login with JWT (JSON Web Tokens).
+* **Role-Based Access Control**: Differentiates between 'free' and 'premium' users.
+* **Content Catalog**: Displays a list of articles filtered by the user's subscription status.
+* **User Profile**: A dedicated page to show the user's subscription status.
+* **Mock Payment Simulation**: A mock checkout process that upgrades a user's role to premium.
+* **Persistent Data**: All user and content data is stored in a MongoDB database.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+***
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Tech Stack
 
-### `npm test`
+* **Backend**: Node.js, Express.js, Mongoose, JWT, bcryptjs, cors, dotenv.
+* **Frontend**: React.js, React Router, Axios.
+* **Database**: MongoDB.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+***
 
-### `npm run build`
+### Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Follow these steps to set up and run the project locally.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Prerequisites
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Node.js (v18 or higher)
+* MongoDB (local installation or cloud service like MongoDB Atlas)
 
-### `npm run eject`
+#### 1. Backend Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1.  Navigate to the `backend` directory.
+    ```bash
+    cd backend
+    ```
+2.  Install backend dependencies.
+    ```bash
+    npm install
+    ```
+3.  Create a `.env` file in the `backend` directory with the following variables:
+    ```
+    # .env
+    DATABASE_URL=your_mongodb_connection_string
+    JWT_SECRET=a_strong_random_secret_key
+    ```
+4.  Run the database seeder script to populate the database with initial content.
+    ```bash
+    node seed.js
+    ```
+5.  Start the backend server.
+    ```bash
+    node server.js
+    ```
+    The server will run on `http://localhost:5000`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 2. Frontend Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1.  Open a new terminal and navigate to the `frontend` directory.
+    ```bash
+    cd frontend
+    ```
+2.  Install frontend dependencies.
+    ```bash
+    npm install
+    ```
+3.  Start the React development server.
+    ```bash
+    npm start
+    ```
+    The frontend will run on `http://localhost:3000`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+***
 
-## Learn More
+### API Endpoints
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The backend provides a RESTful API for all application functionality.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Endpoint | Method | Description | Example Request |
+| :--- | :--- | :--- | :--- |
+| `/api/signup` | `POST` | Creates a new user with a default 'free' role. | `{"username": "testuser", "email": "test@example.com", "password": "password123"}` |
+| `/api/login` | `POST` | Authenticates a user and returns a JWT token. | `{"email": "test@example.com", "password": "password123"}` |
+| `/api/content` | `GET` | Returns content filtered by user role. Protected route. | (Header) `Authorization: Bearer <token>` |
+| `/api/profile` | `GET` | Returns the authenticated user's profile details and role. Protected route. | (Header) `Authorization: Bearer <token>` |
+| `/api/checkout` | `POST` | Simulates a payment and upgrades the user's role to 'premium'. Protected route. | (Header) `Authorization: Bearer <token>` |
 
-### Code Splitting
+***
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Database Schema
 
-### Analyzing the Bundle Size
+#### `User` Collection
+* `username`: String (unique, required)
+* `email`: String (unique, required)
+* `password`: String (required)
+* `role`: String (default: 'free', enum: 'free' or 'premium')
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### `Content` Collection
+* `title`: String (required)
+* `body`: String (required)
+* `type`: String (default: 'free', enum: 'free' or 'premium')
 
-### Making a Progressive Web App
+***
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Live Demo & Repository
 
-### Advanced Configuration
+* **Deployed Frontend**: https://mini-saas-frontend.vercel.app/catalog
+* ### Mini SaaS Subscription App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+This is a simplified, subscription-based content platform built using the MERN stack. It allows users to sign up, log in, and access a content catalog. The application enforces role-based access control, where free users can only view free content, while premium users can access all content after a mock payment.
 
-### Deployment
+***
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Features
 
-### `npm run build` fails to minify
+* **User Authentication**: Secure signup and login with JWT (JSON Web Tokens).
+* **Role-Based Access Control**: Differentiates between 'free' and 'premium' users.
+* **Content Catalog**: Displays a list of articles filtered by the user's subscription status.
+* **User Profile**: A dedicated page to show the user's subscription status.
+* **Mock Payment Simulation**: A mock checkout process that upgrades a user's role to premium.
+* **Persistent Data**: All user and content data is stored in a MongoDB database.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+***
+
+### Tech Stack
+
+* **Backend**: Node.js, Express.js, Mongoose, JWT, bcryptjs, cors, dotenv.
+* **Frontend**: React.js, React Router, Axios.
+* **Database**: MongoDB.
+
+***
+
+### Getting Started
+
+Follow these steps to set up and run the project locally.
+
+#### Prerequisites
+
+* Node.js (v18 or higher)
+* MongoDB (local installation or cloud service like MongoDB Atlas)
+
+#### 1. Backend Setup
+
+1.  Navigate to the `backend` directory.
+    ```bash
+    cd backend
+    ```
+2.  Install backend dependencies.
+    ```bash
+    npm install
+    ```
+3.  Create a `.env` file in the `backend` directory with the following variables:
+    ```
+    # .env
+    DATABASE_URL=your_mongodb_connection_string
+    JWT_SECRET=a_strong_random_secret_key
+    ```
+4.  Run the database seeder script to populate the database with initial content.
+    ```bash
+    node seed.js
+    ```
+5.  Start the backend server.
+    ```bash
+    node server.js
+    ```
+    The server will run on `http://localhost:5000`.
+
+#### 2. Frontend Setup
+
+1.  Open a new terminal and navigate to the `frontend` directory.
+    ```bash
+    cd frontend
+    ```
+2.  Install frontend dependencies.
+    ```bash
+    npm install
+    ```
+3.  Start the React development server.
+    ```bash
+    npm start
+    ```
+    The frontend will run on `http://localhost:3000`.
+
+***
+
+### API Endpoints
+
+The backend provides a RESTful API for all application functionality.
+
+| Endpoint | Method | Description | Example Request |
+| :--- | :--- | :--- | :--- |
+| `/api/signup` | `POST` | Creates a new user with a default 'free' role. | `{"username": "testuser", "email": "test@example.com", "password": "password123"}` |
+| `/api/login` | `POST` | Authenticates a user and returns a JWT token. | `{"email": "test@example.com", "password": "password123"}` |
+| `/api/content` | `GET` | Returns content filtered by user role. Protected route. | (Header) `Authorization: Bearer <token>` |
+| `/api/profile` | `GET` | Returns the authenticated user's profile details and role. Protected route. | (Header) `Authorization: Bearer <token>` |
+| `/api/checkout` | `POST` | Simulates a payment and upgrades the user's role to 'premium'. Protected route. | (Header) `Authorization: Bearer <token>` |
+
+***
+
+### Database Schema
+
+#### `User` Collection
+* `username`: String (unique, required)
+* `email`: String (unique, required)
+* `password`: String (required)
+* `role`: String (default: 'free', enum: 'free' or 'premium')
+
+#### `Content` Collection
+* `title`: String (required)
+* `body`: String (required)
+* `type`: String (default: 'free', enum: 'free' or 'premium')
+
+***
+
+### Live Demo & Repository
+
+* **Deployed Frontend**: https://mini-saas-frontend.vercel.app/catalog
+* **GitHub Frontend**: https://github.com/h4rsh003/mini_saas_frontend
+* **GitHub Backend**: https://github.com/h4rsh003/mini_saas_backend
