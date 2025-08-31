@@ -6,10 +6,9 @@ import SignupPage from './Pages/SignupPage';
 import CatalogPage from './Pages/CatalogPage';
 import ProfilePage from './Pages/ProfilePage';
 
-const PrivateRoute = ({ children }) => {
+const token = localStorage.getItem('auth');
 
-  const token = localStorage.getItem('auth');
-  console.log({token});
+const PrivateRoute = ({ children }) => {
   return token ? children : <Navigate to="/login" />;
 
 };
@@ -22,11 +21,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/catalog" element={<CatalogPage />} />
-          
+          <Route path="/catalog" element={<PrivateRoute>
+            <CatalogPage />
+          </PrivateRoute>
+          } />
+
           <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
-          
-          <Route path="/" element={<Navigate to="/login" />} />
+
+          <Route path="/" element={!token ? <Navigate to="/login" /> : <Navigate to="catalog"/>} />
         </Routes>
       </main>
     </Router>
