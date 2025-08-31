@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../context/AuthContext';
 
 const CatalogPage = () => {
   const [articles, setArticles] = useState([]);
@@ -23,7 +24,7 @@ const CatalogPage = () => {
             'Authorization': `Bearer ${token}`,
           },
         };
-        const response = await axios.get('http://localhost:5000/api/content', config);
+        const response = await axios.get(`${BASE_URL}/api/content`, config);
         setArticles(response.data);
         setLoading(false);
       } catch (err) {

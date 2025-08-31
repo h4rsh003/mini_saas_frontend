@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../context/AuthContext';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
@@ -23,7 +24,7 @@ const ProfilePage = () => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      const response = await axios.get('http://localhost:5000/api/profile', config);
+      const response = await axios.get(`${BASE_URL}/api/profile`, config);
       if (response) {
         setProfile(response.data);
       }
@@ -49,7 +50,7 @@ const ProfilePage = () => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      const response = await axios.post('http://localhost:5000/api/checkout', {}, config);
+      const response = await axios.post(`${BASE_URL}/api/checkout`, {}, config);
       setMessage(response.data.message);
       if (response) {
         fetchProfile();
